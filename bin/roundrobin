@@ -1,0 +1,37 @@
+#!/usr/bin/env node
+var lib = require('../lib');
+var results = lib.runners.roundrobin(lib.strategies);
+
+function flatten_results (results) {
+  var flat_results = Object.keys(results).map(function (name, i, names) {
+    return names.map(function (opponent_name) {
+      var score = results[name][opponent_name];
+      return [name, opponent_name].join(' vs ') + ' : ' + score;
+    });
+  });
+
+  return [].concat.apply([], flat_results);
+}
+
+function sum_results (results) {
+  var sums = {};
+  
+  for (name in results) {
+    var sum = Object.keys(results[name]).reduce(function (a, opponent_name) {
+      return a + results[name][opponent_name];
+    }, 0);
+    sums[name] = sum;
+  }
+
+  return sums;
+}
+
+console.log('N.B.: a score is the number of years that strategy would spend in prison. Lower scores are better!\n');
+
+console.log('COMPLETE MATCHUPS');
+flatten_results(results).forEach(function (line) {
+  console.log(line);
+});
+
+console.log('\nFINAL SCORES');
+console.log(JSON.stringify(sum_results(results), undefined, 2));

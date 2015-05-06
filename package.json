@@ -1,0 +1,19 @@
+{
+  "name": "prisoners-dilemma-tournament",
+  "version": "0.1.0",
+  "description": "A tournament of algorithms negotiating the Prisoner's Dilemma",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha -R spec",
+    "rr": "./bin/roundrobin",
+    "gen": "./bin/generation"
+  },
+  "author": "Diana Thayer <garbados@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "mocha": "^2.2.4"
+  }
+}
