@@ -1,6 +1,8 @@
 # Prisoner's Dilemma Tournament
 
-[Prisoner's Dilemma](http://en.wikipedia.org/wiki/Prisoner%27s_dilemma) tournies are [really neat](http://lesswrong.com/lw/7f2/prisoners_dilemma_tournament_results/), so I decided to make my own.
+[![Build Status](https://travis-ci.org/garbados/prisoners-dilemma-tournament.svg)](https://travis-ci.org/garbados/prisoners-dilemma-tournament)
+
+[Prisoner's Dilemma](http://en.wikipedia.org/wiki/Prisoner%27s_dilemma) tournaments are [really neat](http://lesswrong.com/lw/7f2/prisoners_dilemma_tournament_results/), so I decided to make my own.
 
 Feel free to contribute your own strategies!
 
@@ -33,22 +35,29 @@ There are two tournament types: round-robin, and generational.
 
 A round-robin tournament pits every strategy against every other strategy, and then reports the matrix of results.
 
-A generational tournament starts with a round-robin tournament, but uses the results to kill off ineffective strategies, and reproduce effective ones, before running another round-robin tournament. After a given number of generations, the tournament will report the results of each, describing populations of strategies over time.
+A generational tournament starts with a round-robin tournament, but uses the results to kill off ineffective strategies, and reproduce effective ones, before running another round-robin tournament. After a given number of generations, the tournament will report the results of each, describing populations of strategies over time. **At this time, generational tournaments are not implemented.**
 
 ## Usage
 
+If you want to play around with the tournament code, or fine-tune your own strategies, get the source code:
+
+    git clone https://github.com/garbados/prisoners-dilemma-tournament.git
+    cd prisoners-dilemma-tournament
+
 To run a round-robin tournament:
 
-    ./bin/play roundrobin
+    ./bin/roundrobin
 
 To run a generational tournament across 5 generations:
 
-    ./bin/play generation 5
+    ./bin/generation 5
 
 ## Testing
 
 Get the project's source code, and then:
 
+    git clone https://github.com/garbados/prisoners-dilemma-tournament.git
+    cd prisoners-dilemma-tournament
     npm install
     npm test
 
