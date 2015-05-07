@@ -19,7 +19,7 @@ function count (list) {
 }
 
 results.forEach(function (generation, i) {
-  console.log('\nGeneration', i+1);
+  console.log('\nGeneration', i);
   var counts = count(generation);
   Object.keys(counts).map(function (name) {
     return [name, counts[name]];
