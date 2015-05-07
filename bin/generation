@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 var lib = require('../lib');
-var num_generations = process.argv[2] || 5;
+var num_generations = process.argv[2] || 10;
 var results = lib.runners.generation(lib.strategies, num_generations);
 
 function count (list) {
