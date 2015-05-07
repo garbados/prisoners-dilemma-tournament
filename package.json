@@ -9,7 +9,8 @@
   "scripts": {
     "test": "mocha -R spec",
     "rr": "./bin/roundrobin",
-    "gen": "./bin/generation"
+    "gen": "./bin/generation",
+    "start": "npm run rr"
   },
   "author": "Diana Thayer <garbados@gmail.com>",
   "license": "ISC",
