@@ -10,17 +10,28 @@ Feel free to contribute your own strategies!
 
 ### Strategies
 
-Strategies are functions that take two lists -- your moves so far, and your opponent's -- and return a boolean value indicating whether they want to cooperate this turn (`true`), or defect (`false`). For example:
+Strategies are functions that take a list of lists, each containing your move and your opponent's for that round. For example:
+
+```javascript
+[
+  [true, false],
+  [false, false],
+  [true, true],
+  ...
+]
+```
+
+Functions must return a boolean value indicating whether they want to cooperate this turn (`true`), or defect (`false`). For example:
 
 ```javascript
 // titfortat.js
-module.exports = function (my_history, their_history) {  
-  var opponents_last_move = their_history[their_history.length-1];
-  if (opponents_last_move !== undefined)
-    return opponents_last_move;
-  else
-    return true;
-}
+module.exports = function (history) {
+  if (history.length) {
+    var last_round = history[history.length-1];
+    var opponent_last_move = last_round[1]; 
+    return opponent_last_move;
+  } else return true;
+};
 ```
 
 Returning a `true` value indicates your strategy will cooperate this turn. Returning `false` indicates it will defect.
