@@ -46,7 +46,7 @@ There are two tournament types: round-robin, and generational.
 
 A round-robin tournament pits every strategy against every other strategy, and then reports the matrix of results.
 
-A generational tournament starts with a round-robin tournament, but uses the results to kill off ineffective strategies, and reproduce effective ones, before running another round-robin tournament. After a given number of generations, the tournament will report the results of each, describing populations of strategies over time. **At this time, generational tournaments are not implemented.**
+A generational tournament starts with a round-robin tournament, but uses the results to kill off ineffective strategies, and reproduce effective ones, before running another round-robin tournament. After a given number of generations, the tournament will report the results of each, describing populations of strategies over time.
 
 ## Usage
 
