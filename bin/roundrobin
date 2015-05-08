@@ -1,44 +1,21 @@
 #!/usr/bin/env node
+var Table = require('cli-table');
 var lib = require('../lib');
-var results = lib.runners.roundrobin(lib.strategies);
+var tournament = lib.runners.roundrobin(lib.strategies);
 
-function flatten_results (results) {
-  var flat_results = Object.keys(results).map(function (name, i, names) {
-    return names.map(function (opponent_name) {
-      var score = results[name][opponent_name];
-      return [name, opponent_name].join(' vs ') + ' : ' + score;
-    });
-  });
-
-  return [].concat.apply([], flat_results);
-}
-
-function sum_results (results) {
-  var sums = {};
-  
-  for (name in results) {
-    var sum = Object.keys(results[name]).reduce(function (a, opponent_name) {
-      return a + results[name][opponent_name];
-    }, 0);
-    sums[name] = sum;
-  }
-
-  return sums;
-}
-
-console.log('N.B.: a score is the number of years that strategy would spend in prison. Lower scores are better!');
-
-console.log('\nCOMPLETE MATCHUPS');
-flatten_results(results).forEach(function (line) {
-  console.log(line);
+var table = new Table({
+  head: ['#', 'wins', 'points', 'name']
 });
 
-console.log('\nFINAL SCORES');
-var total_scores = sum_results(results);
-var sorted_scores = Object.keys(total_scores).map(function (k) {
-  return [k, total_scores[k]];
-}).sort(function (a, b) {
-  return a[1] - b[1];
-}).forEach(function (score, i) {
-  console.log(i+1, score[1], score[0]);
+tournament.results
+// sort by fewest years in prison
+.sort(function (a, b) {
+  return b.for - a.for;
+})
+// add each result to the table
+.forEach(function (result, i) {
+  var player = tournament.players[result.seed-1];
+  table.push([i+1, result.wins, -result.for, player.name]);
 });
+
+console.log(table.toString());
