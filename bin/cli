@@ -1,0 +1,183 @@
+#!/usr/bin/env node
+/**
+ * The tourney cli.
+ * @module  bin/cli
+ */
+
+var lib = require('../lib')
+var pkg = require('../package.json')
+var program = require('commander')
+var Table = require('cli-table2')
+
+const KNOWN_RUNNERS = Object.keys(lib.runners)
+const KNOWN_STRATEGIES = Object.keys(lib.strategies)
+
+function resultTable (participants, results) {
+  var table = new Table({
+    head: [
+      '#',
+      'name',
+      'points',
+      'wins',
+      "draws",
+      "losses"
+    ]
+  })
+
+  results
+    .map(function (result, i) {
+      result.participant = participants[i]
+      return result
+    })
+    // sort by fewest years in prison
+    .sort(function (a, b) {
+      return a.score - b.score
+    })
+    // add each result to the table
+    .forEach(function (result, i) {
+      table.push([
+        i+1,
+        result.participant,
+        result.score,
+        result.wins,
+        result.draws,
+        result.losses
+      ])
+    })
+
+  return table
+}
+
+function generationsTables (generations) {
+  // count the number of copies of each strategy in each generation
+  var counts = generations.map(function (generation, i) {
+    var count = {}
+
+    // count up number of copies
+    generation.forEach(function (name) {
+      if (name in count) {
+        count[name]++
+      } else {
+        count[name] = 1
+      }
+    })
+
+    return count
+  })
+
+  // convert counts to tables
+  var tables = counts.map(function (count) {
+    var table = new Table({
+      head: [
+        '#',
+        'instances',
+        'name'
+      ]
+    })
+
+    Object.keys(count).map(function (name) {
+      return {
+        name: name,
+        count: count[name]
+      }
+    }).sort(function (a, b) {
+      return b.count - a.count
+    }).forEach(function (strategy, i) {
+      table.push([
+        i+1,
+        strategy.count,
+        strategy.name,
+      ])
+    })
+
+    return table
+  })
+
+  return tables
+}
+
+function matchesTables (matches) {
+  var tables = matches.map(function (match) {
+    var table = new Table({
+      head: [
+        'Round',
+        match.pair[0],
+        match.pair[1]
+      ]
+    })
+
+    match.history.forEach(function (round, i) {
+      table.push([i+1, round[0], round[1]])
+    })
+
+    return table
+  })
+
+  return tables
+}
+
+program
+  .version(pkg.version)
+  .usage('[options]')
+  .option('-p, --participants <name>', 'Select participants by name', function (name, participants) {
+    participants.push(name)
+    return participants
+  }, [])
+  .option('-R, --rounds <n>', 'The number of rounds in each match.', parseInt)
+  .option('-G, --generations <n>', 'The number of generations in a generational tournament.', parseInt)
+  .option('-C, --copies <n>', 'The number of copies of each strategy in the initial generation of a generational tournament.', parseInt)
+  .option('-v, --verbose', 'Enable verbose reporting.')
+
+program
+  .command('roundrobin')
+  .description('Run a round robin tournament.')
+  .action(function () {
+    var participants = program.participants.length ? program.participants : KNOWN_STRATEGIES
+    var tournament = new lib.runners.RoundRobin({
+      participants: participants,
+      numRounds: program.rounds
+    })
+    // run the tourney
+    var results = tournament.run()
+    // ...and print the result
+    console.log(resultTable(results.participants, results.results).toString())
+    if (program.verbose) {
+      matchesTables(results.matches).forEach(function (table, i) {
+        console.log('Match ' + String(i+1))
+        console.log(table.toString())
+      })
+    }
+  })
+
+program
+  .command('generational')
+  .description('Run a generational tournament.')
+  .action(function () {
+    var participants = program.participants.length ? program.participants : KNOWN_STRATEGIES
+    var tournament = new lib.runners.Generation({
+      participants: participants,
+      numRounds: program.rounds,
+      numGenerations: program.generations,
+      numCopies: program.copies
+    })
+    // run the tourney
+    var results = tournament.run()
+    // ...and print the result
+    console.log(resultTable(results.participants, results.results).toString())
+    // print generational info
+    generationsTables(results.generations).forEach(function (table, i) {
+      console.log('Generation ' + String(i))
+      console.log(table.toString())
+    })
+    // print match info if `verbose` is set
+    if (program.verbose) {
+      matchesTables(results.matches).forEach(function (table, i) {
+        console.log('Match ' + String(i+1))
+        console.log(table.toString())
+      })
+    }
+  })
+
+// BEGIN
+program
+  .parse(process.argv)

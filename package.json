@@ -11,9 +11,9 @@
     "test": "standard && mocha -R spec",
     "cov": "nyc npm test",
     "docs": "jsdoc bin lib test -r -d docs -R readme.md -c conf.json",
-    "rr": "./bin/roundrobin",
-    "gen": "./bin/generation",
-    "start": "npm run rr"
+    "rr": "./bin/cli roundrobin",
+    "gen": "./bin/cli generational",
+    "start": "./bin/cli"
   },
   "author": "Diana Thayer <garbados@gmail.com>",
   "license": "GPL-3.0",
