@@ -1,24 +1,34 @@
 {
   "name": "prisoners-dilemma-tournament",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "A tournament of algorithms negotiating the Prisoner's Dilemma",
-  "main": "index.js",
+  "repository": "https://github.com/garbados/prisoners-dilemma-tournament",
+  "main": "./lib/index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "mocha -R spec",
+    "test": "standard && mocha -R spec",
+    "cov": "nyc npm test",
+    "docs": "jsdoc bin lib test -r -d docs -R readme.md -c conf.json",
     "rr": "./bin/roundrobin",
     "gen": "./bin/generation",
     "start": "npm run rr"
   },
   "author": "Diana Thayer <garbados@gmail.com>",
-  "license": "ISC",
+  "license": "GPL-3.0",
   "devDependencies": {
-    "mocha": "^2.2.4"
+    "jsdoc": "^3.4.3",
+    "mocha": "^2.5.3",
+    "nyc": "^10.3.2",
+    "standard": "^10.0.2"
   },
   "dependencies": {
-    "cli-table": "^0.3.1",
-    "groupstage": "^3.0.0"
+    "cli-table2": "^0.2.0",
+    "commander": "^2.9.0",
+    "ejs": "^2.5.6",
+    "groupstage": "^3.1.1",
+    "roundrobin": "^1.0.3",
+    "underscore": "^1.8.3"
   }
 }
