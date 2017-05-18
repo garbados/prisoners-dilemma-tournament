@@ -1,0 +1,18 @@
+/**
+ * A strategy by you!
+ * @module lib/strategies/<%= name %>
+ */
+
+// You can require other strategies and use them as part of yours:
+// var titfortat = require('./titfortat')
+
+/**
+ * Strategy function. Consumes history, returns a choice.
+ * @param  {Array} history An array of arrays of each strategy's choice from each round so far,
+                           as `[[my_choice, their_choice], ...]`.
+ * @return {Boolean}       A boolean representing whether the strategy chooses to cooperate (`true`) or defect (`false`).
+ */
+module.exports = function (history) {
+  // Strategy logic goes here!
+  return true
+}

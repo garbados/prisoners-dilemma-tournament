@@ -4,7 +4,10 @@
  * @module  bin/cli
  */
 
+var ejs = require('ejs')
+var fs = require('fs')
 var lib = require('../lib')
+var path = require('path')
 var pkg = require('../package.json')
 var program = require('commander')
 var Table = require('cli-table2')
@@ -175,6 +178,27 @@ program
         console.log('Match ' + String(i+1))
         console.log(table.toString())
       })
+    }
+  })
+
+program
+  .command('scaffold <name>')
+  .description('Scaffold a new strategy.')
+  .action(function (name) {
+    if (name in lib.strategies) {
+      throw new Error("A strategy with that name already exists.")
+    } else {
+      var scaffoldPath = path.join(__dirname, '..', 'scaffolds')
+      var strategyTemplate = fs.readFileSync(path.join(scaffoldPath, 'strategy.ejs'), 'utf8')
+      var strategyTestTemplate = fs.readFileSync(path.join(scaffoldPath, 'strategy-test.ejs'), 'utf8')
+      var strategySource = ejs.render(strategyTemplate, { name: name })
+      var strategyTestSource = ejs.render(strategyTestTemplate, { name: name })
+      var strategyDest = path.join(__dirname, '..', 'lib', 'strategies', name + '.js')
+      var strategyTestDest = path.join(__dirname, '..', 'test', 'strategies', name + '.js')
+      console.log('Creating strategy file at ' + strategyDest)
+      fs.writeFileSync(strategyDest, strategySource)
+      console.log('Creating strategy test file at ' + strategyTestDest)
+      fs.writeFileSync(strategyTestDest, strategyTestSource)
     }
   })
 

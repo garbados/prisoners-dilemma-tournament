@@ -1,0 +1,21 @@
+/* global describe, it */
+
+var assert = require('assert')
+var strategy = require('../../lib/strategies/<%= name %>')
+
+describe('strategies.<%= name %>', function () {
+  it('should process a history into a choice', function () {
+    var history = [
+      [true, false],
+      [false, true],
+      [true, true]
+    ]
+    history.forEach(function (round, i) {
+      var historySubset = history.slice(0, i)
+      var choice = strategy(historySubset)
+      assert(typeof choice === 'boolean')
+    })
+  })
+
+  // write additional tests as appropriate
+})
