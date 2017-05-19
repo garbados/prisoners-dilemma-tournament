@@ -8,6 +8,10 @@
 
 [Prisoner's Dilemma](http://en.wikipedia.org/wiki/Prisoner%27s_dilemma) tournaments are [really neat](http://lesswrong.com/lw/7f2/prisoners_dilemma_tournament_results/), so I decided to make my own.
 
+This project is ongoing! If you'd like to contribute a strategy (or strategies!) to compete in the tournament, please fork this repo, add a strategy with `pbt new <name>`, and issue a Pull Request with your changes.
+
+If you'd like to see some example tournament results, check [this](https://gist.github.com/garbados/f772bad28353df9ca2bf8ca5daafad04).
+
 ## Install
 
 If you want to play around with the tournament code, or develop your own strategies, get the source code using [git][git], and install dependencies with [npm][npm] like so:
