@@ -3,17 +3,20 @@
 var assert = require('assert')
 var strategy = require('../../lib/strategies/<%= name %>')
 
+const HISTORY = [
+  [true, false],
+  [false, true],
+  [true, true]
+]
+
 describe('strategies.<%= name %>', function () {
-  it('should process a history into a choice', function () {
-    var history = [
-      [true, false],
-      [false, true],
-      [true, true]
-    ]
-    history.forEach(function (round, i) {
-      var historySubset = history.slice(0, i)
+  it('should process histories into choices', function () {
+    HISTORY.forEach(function (round, i) {
+      // test the strategy against successive subsets of the history
+      var historySubset = HISTORY.slice(0, i)
       var choice = strategy(historySubset)
-      assert(typeof choice === 'boolean')
+      // assert that it returns a boolean
+      assert([true, false].indexOf(choice) > -1)
     })
   })
 
