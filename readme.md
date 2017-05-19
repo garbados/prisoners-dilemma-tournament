@@ -8,7 +8,7 @@
 
 [Prisoner's Dilemma](http://en.wikipedia.org/wiki/Prisoner%27s_dilemma) tournaments are [really neat](http://lesswrong.com/lw/7f2/prisoners_dilemma_tournament_results/), so I decided to make my own.
 
-This project is ongoing! If you'd like to contribute a strategy (or strategies!) to compete in the tournament, please fork this repo, add a strategy with `pbt new <name>`, and issue a Pull Request with your changes.
+This project is ongoing! If you'd like to contribute a strategy (or strategies!) to compete in the tournament, please fork this repo, follow the install instructions, add a strategy with `pdt new <name>`, and issue a Pull Request with your changes.
 
 If you'd like to see some example tournament results, check [this](https://gist.github.com/garbados/f772bad28353df9ca2bf8ca5daafad04).
 
@@ -72,18 +72,17 @@ To run the test suite *and* print test coverage:
 
 ### Strategies
 
-Strategies take a history of the choices made during the round so far, and return their choice for this round: to cooperate (`true`) or defect (`false`).
+Strategies take a history of the choices made during the rounds of the match so far, and return their choice for this round: to cooperate (`true`) or defect (`false`).
 
 So, a strategy function that always cooperates looks like this:
 
 ```javascript
-// lib/strategies/cooperate.js
 module.exports = function (history) {
   return true
 }
 ```
 
-The history array passed to strategy functions during each round is an array of arrays. Each contained array represents the choices of one round: yours (`history[n][0]`) and your opponent's (`history[n][1]`). The first array (`history[0]`) is the first turn. At the very start of a match, history will be empty (`[]`), since no choices have been made yet.
+The history array passed to strategy functions during each round is an array of arrays. Each contained array represents the choices of one round: yours (`history[n][0]`) and your opponent's (`history[n][1]`). The first array (`history[0]`) is the first round. At the very start of a match, history will be empty (`[]`), since no choices have been made yet.
 
 ```javascript
 // example history object
