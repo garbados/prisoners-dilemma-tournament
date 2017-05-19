@@ -9,69 +9,112 @@
 
 ## Install
 
-If you want to play around with the tournament code, or fine-tune your own strategies, get the source code using [git][git], and install dependencies with [npm][npm] like so:
+If you want to play around with the tournament code, or develop your own strategies, get the source code using [git][git], and install dependencies with [npm][npm] like so:
 
     git clone https://github.com/garbados/prisoners-dilemma-tournament.git
     cd prisoners-dilemma-tournament
     npm install
+    npm link
+    pdt
+    > Usage: pdt [options]
+    > ...
+
+You can now use the `pdt` executable from your terminal to run tournaments!
 
 ## Usage
 
 To run a round-robin tournament:
 
-    npm run rr
+    pdt roundrobin
+    # OR
+    pdt rr
 
-To run a generational tournament across 5 generations:
+To run a generational tournament:
 
-    npm run gen -- 5
+    pdt generational
+    # OR
+    pdt gen
+
+Use the `-p` flag to include only specific strategies in a tournament:
+
+    pdt rr -p cooperate -p defect
+
+To create your own strategy, you can scaffold one with tests:
+
+    pdt scaffold <name>
+    # OR
+    pdt new <name>
+    # FOR EXAMPLE
+    pdt new my-great-strategy
+    > Creating strategy file at /{PATH_TO_PROJECT}/prisoners-dilemma-tournament/lib/strategies/my-great-strategy.js
+    > Creating strategy test file at /{PATH_TO_PROJECT}/prisoners-dilemma-tournament/test/strategies/my-great-strategy.js
+
+You can then edit those files to customize your strategy's logic and the tests that it undergoes.
+
+Check `pdt -h` for more info about available commands and options.
 
 ## Testing
 
-To run the tournament's test suite:
+To run the test suite:
 
     npm test
+
+To run the test suite *and* print test coverage:
+
+    npm run cov
 
 ## Concepts
 
 ### Strategies
 
-Strategies are functions that take a list of lists, each containing your move and your opponent's for that round. For example:
+Strategies take a history of the choices made during the round so far, and return their choice for this round: to cooperate (`true`) or defect (`false`).
+
+So, a strategy function that always cooperates looks like this:
 
 ```javascript
+// lib/strategies/cooperate.js
+module.exports = function (history) {
+  return true
+}
+```
+
+The history array passed to strategy functions during each round is an array of arrays. Each contained array represents the choices of one round: yours (`history[n][0]`) and your opponent's (`history[n][1]`). The first array (`history[0]`) is the first turn. At the very start of a match, history will be empty (`[]`), since no choices have been made yet.
+
+```javascript
+// example history object
 [
-  [true, false],
-  [false, false],
-  [true, true],
+  [true, false],    // you cooperated, they defected
+  [false, false],   // you both defected
+  [true, true],     // you both cooperated
   ...
 ]
 ```
 
-Functions must return a boolean value indicating whether they want to cooperate this turn (`true`), or defect (`false`). For example:
+To create a new strategy, run `pdt new <name>`. To submit your strategy to the project, fork this repo, commit your changes, and issue a Pull Request. Submissions are welcome! Check out some of the existing strategies in [lib/strategies](https://github.com/garbados/prisoners-dilemma-tournament/tree/master/lib/strategies) for ideas and examples.
 
-```javascript
-// titfortat.js
-module.exports = function (history) {
-  if (history.length) {
-    var last_round = history[history.length-1];
-    var opponent_last_move = last_round[1];
-    return opponent_last_move;
-  } else return true;
-};
-```
+N.B.:
 
-Returning a `true` value indicates your strategy will cooperate this turn. Returning `false` indicates it will defect.
+- Strategies cannot host state outside of their immediate scope. Many copies of the strategy may operate at once, so modifying variables outside of function scope will have confusing results. Constants are fine.
+- Strategies cannot know when the match will end. They can guess!
+- There is currently no support for performing async work. Given the number of rounds in a match, and the number of matches in a tournament, even synchronous calls to external resources (like files or databases) make the game prohibitively slow.
 
-To add a strategy, add a file to `lib/strategies/` that exports a function. The loader will detect the strategy automatically, and include it in future tournaments. The testing suite, likewise, will attempt to ensure all included strategies won't break or time out during a tournament.
+### Scoring
 
-If your strategy needs to do async work, uh, just don't.
+After each match, a score is tallied based on the choices each strategy made during each round:
+
+- If you and your opponent cooperate, you each gain 1 point.
+- If you both defect, you each gain 2 points.
+- If one of you defects and the other cooperates, the cooperator gains 3 points while the defector gains 0.
+
+At the end of the match, the lowest score wins. Scores are also tallied across matches. A strategy that reliably wins matches may not overall have the lowest score.
 
 ### Tournaments
 
 There are two tournament types: round-robin, and generational.
 
-A round-robin tournament pits every strategy against every other strategy, and then reports each strategy's 'score' in terms of years spent in AI prison. The lowest score wins.
+A round-robin tournament pits every strategy against every strategy including itself, and then reports each strategy's total score, wins, draws, and losses.
 
-A generational tournament starts with a round-robin tournament, but uses the results to kill off ineffective strategies, and reproduce effective ones, before running another round-robin tournament. After a given number of generations, the tournament will report the results of each, describing populations of strategies over time.
+A generational tournament pits multiple copies of participating strategies against each other in successive round-robin tournaments. The strategy with the lowest score after each round-robin gains a copy, while the highest score loses a copy. In this way, the tournament meta evolves over time as strategies replace each other. After the generational tournament concludes, it reports the populations of each successive generation, tallying the number of copies of each strategy in them.
 
 ## License
 
