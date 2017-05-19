@@ -4,9 +4,21 @@ var assert = require('assert')
 var strategy = require('../../lib/strategies/drone')
 
 const HISTORY = [
-  [true, false],
   [false, true],
-  [true, true]
+  [false, true],
+  [false, true],
+  [false, true],
+  [false, true],
+  [false, true]
+]
+
+const QUEEN_HISTORY = [
+  [false, true],
+  [false, false],
+  [false, false],
+  [false, true],
+  [true, false],
+  [true, false]
 ]
 
 describe('strategies.drone', function () {
@@ -20,5 +32,17 @@ describe('strategies.drone', function () {
     })
   })
 
-  // write additional tests as appropriate
+  it('should detect a queen', function () {
+    var historySubset
+    var choice
+    for (var i = 0; i <= QUEEN_HISTORY.length; i++) {
+      historySubset = QUEEN_HISTORY.slice(0, i)
+      choice = strategy(historySubset)
+      if (i > 0) {
+        assert(choice === QUEEN_HISTORY[i - 1][0])
+      } else {
+        assert(choice === false)
+      }
+    }
+  })
 })
