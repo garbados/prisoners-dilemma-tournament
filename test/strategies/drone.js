@@ -35,11 +35,11 @@ describe('strategies.drone', function () {
   it('should detect a queen', function () {
     var historySubset
     var choice
-    for (var i = 0; i <= QUEEN_HISTORY.length; i++) {
+    for (var i = 0; i < QUEEN_HISTORY.length; i++) {
       historySubset = QUEEN_HISTORY.slice(0, i)
       choice = strategy(historySubset)
       if (i > 0) {
-        assert(choice === QUEEN_HISTORY[i - 1][0])
+        assert(choice === QUEEN_HISTORY[i][0])
       } else {
         assert(choice === false)
       }
