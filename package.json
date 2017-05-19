@@ -4,13 +4,16 @@
   "description": "A tournament of algorithms negotiating the Prisoner's Dilemma",
   "repository": "https://github.com/garbados/prisoners-dilemma-tournament",
   "main": "./lib/index.js",
-  "bin": { "pdt": "./bin/cli"},
+  "bin": {
+    "pdt": "./bin/cli"
+  },
   "directories": {
     "test": "test"
   },
   "scripts": {
     "test": "standard 'lib/**/*.js' 'test/**/*.js' 'bin/*' && mocha -R spec --recursive lib bin test",
     "cov": "nyc npm test",
+    "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "docs": "jsdoc bin lib test -r -d docs -R readme.md -c conf.json",
     "help": "./bin/cli -h",
     "cli": "./bin/cli",
@@ -22,6 +25,7 @@
   "author": "Diana Thayer <garbados@gmail.com>",
   "license": "GPL-3.0",
   "devDependencies": {
+    "coveralls": "^2.13.1",
     "jsdoc": "^3.4.3",
     "mocha": "^2.5.3",
     "nyc": "^10.3.2",

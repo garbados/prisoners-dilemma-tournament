@@ -4,6 +4,7 @@
 [npm]: https://npmjs.com/
 
 [![Build Status](https://travis-ci.org/garbados/prisoners-dilemma-tournament.svg)](https://travis-ci.org/garbados/prisoners-dilemma-tournament)
+[![Coverage Status](https://coveralls.io/repos/github/garbados/prisoners-dilemma-tournament/badge.svg?branch=master)](https://coveralls.io/github/garbados/prisoners-dilemma-tournament?branch=master)
 
 [Prisoner's Dilemma](http://en.wikipedia.org/wiki/Prisoner%27s_dilemma) tournaments are [really neat](http://lesswrong.com/lw/7f2/prisoners_dilemma_tournament_results/), so I decided to make my own.
 
