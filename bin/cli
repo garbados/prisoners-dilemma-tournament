@@ -122,17 +122,18 @@ function matchesTables (matches) {
 program
   .version(pkg.version)
   .usage('[options]')
-  .option('-p, --participants <name>', 'Select participants by name', function (name, participants) {
+  .option('-p, --participants <name>', 'Select participants by name. Defaults to all known strategies.', function (name, participants) {
     participants.push(name)
     return participants
   }, [])
-  .option('-R, --rounds <n>', 'The number of rounds in each match.', parseInt)
-  .option('-G, --generations <n>', 'The number of generations in a generational tournament.', parseInt)
-  .option('-C, --copies <n>', 'The number of copies of each strategy in the initial generation of a generational tournament.', parseInt)
+  .option('-R, --rounds <n>', 'The number of rounds in each match. Defaults to 100 +/- 2.', parseInt)
+  .option('-G, --generations <n>', 'The number of generations in a generational tournament. Defaults to 100.', parseInt)
+  .option('-C, --copies <n>', 'The number of copies of each strategy in the initial generation of a generational tournament. Defaults to 3.', parseInt)
   .option('-v, --verbose', 'Enable verbose reporting.')
 
 program
   .command('roundrobin')
+  .alias('rr')
   .description('Run a round robin tournament.')
   .action(function () {
     var participants = program.participants.length ? program.participants : KNOWN_STRATEGIES
@@ -154,6 +155,7 @@ program
 
 program
   .command('generational')
+  .alias('gen')
   .description('Run a generational tournament.')
   .action(function () {
     var participants = program.participants.length ? program.participants : KNOWN_STRATEGIES
@@ -183,6 +185,7 @@ program
 
 program
   .command('scaffold <name>')
+  .alias('new')
   .description('Scaffold a new strategy.')
   .action(function (name) {
     if (name in lib.strategies) {
@@ -205,3 +208,8 @@ program
 // BEGIN
 program
   .parse(process.argv)
+
+// if no action is selected, output help
+if (program.args.length === 0) {
+  program.help()
+}
