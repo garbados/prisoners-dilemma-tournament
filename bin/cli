@@ -12,7 +12,6 @@ var pkg = require('../package.json')
 var program = require('commander')
 var Table = require('cli-table2')
 
-const KNOWN_RUNNERS = Object.keys(lib.runners)
 const KNOWN_STRATEGIES = Object.keys(lib.strategies)
 
 function resultTable (participants, results) {
@@ -22,8 +21,8 @@ function resultTable (participants, results) {
       'name',
       'points',
       'wins',
-      "draws",
-      "losses"
+      'draws',
+      'losses'
     ]
   })
 
@@ -39,7 +38,7 @@ function resultTable (participants, results) {
     // add each result to the table
     .forEach(function (result, i) {
       table.push([
-        i+1,
+        i + 1,
         result.participant,
         result.score,
         result.wins,
@@ -87,9 +86,9 @@ function generationsTables (generations) {
       return b.count - a.count
     }).forEach(function (strategy, i) {
       table.push([
-        i+1,
+        i + 1,
         strategy.count,
-        strategy.name,
+        strategy.name
       ])
     })
 
@@ -110,7 +109,7 @@ function matchesTables (matches) {
     })
 
     match.history.forEach(function (round, i) {
-      table.push([i+1, round[0], round[1]])
+      table.push([i + 1, round[0], round[1]])
     })
 
     return table
@@ -147,7 +146,7 @@ program
     console.log(resultTable(results.participants, results.results).toString())
     if (program.verbose) {
       matchesTables(results.matches).forEach(function (table, i) {
-        console.log('Match ' + String(i+1))
+        console.log('Match ' + String(i + 1))
         console.log(table.toString())
       })
     }
@@ -177,7 +176,7 @@ program
     // print match info if `verbose` is set
     if (program.verbose) {
       matchesTables(results.matches).forEach(function (table, i) {
-        console.log('Match ' + String(i+1))
+        console.log('Match ' + String(i + 1))
         console.log(table.toString())
       })
     }
@@ -189,7 +188,7 @@ program
   .description('Scaffold a new strategy.')
   .action(function (name) {
     if (name in lib.strategies) {
-      throw new Error("A strategy with that name already exists.")
+      throw new Error('A strategy with that name already exists.')
     } else {
       var scaffoldPath = path.join(__dirname, '..', 'scaffolds')
       var strategyTemplate = fs.readFileSync(path.join(scaffoldPath, 'strategy.ejs'), 'utf8')
