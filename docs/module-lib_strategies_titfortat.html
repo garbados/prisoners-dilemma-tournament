@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: lib/strategies/sorry</title>
+    <title>JSDoc: Module: lib/strategies/titfortat</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: lib/strategies/sorry</h1>
+    <h1 class="page-title">Module: lib/strategies/titfortat</h1>
 
     
 
@@ -31,6 +31,8 @@
         
             
         
+            
+        
     
 </header>
 
@@ -38,9 +40,9 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Tit-for-tat with a twist:
-if the opponent defects, there is a chance equal to <code>FOREGIVENESS</code>
-that the strategy will cooperate anyway, rather than defect.</p></div>
+            <div class="description"><p>The classic: tit-for-tat.
+Cooperates on the first turn, and thereafter
+copies the opponent's most recent choice.</p></div>
         
 
         
@@ -89,7 +91,7 @@ that the strategy will cooperate anyway, rather than defect.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="strategies_sorry.js.html">strategies/sorry.js</a>, <a href="strategies_sorry.js.html#line1">line 1</a>
+        <a href="strategies_titfortat.js.html">strategies/titfortat.js</a>, <a href="strategies_titfortat.js.html#line1">line 1</a>
     </li></ul></dd>
     
 
@@ -112,6 +114,160 @@ that the strategy will cooperate anyway, rather than defect.</p></div>
 
 
 
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="module:lib/strategies/titfortat"><span class="type-signature"></span>(require("lib/strategies/titfortat"))<span class="signature">(history)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Strategy function. Consumes history, returns a choice.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>history</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>An array of arrays of each strategy's choice from each round so far,
+                           as <code>[[my_choice, their_choice], ...]</code>.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="strategies_titfortat.js.html">strategies/titfortat.js</a>, <a href="strategies_titfortat.js.html#line14">line 14</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A boolean representing whether the strategy chooses to cooperate (<code>true</code>) or defect (<code>false</code>).</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -129,83 +285,6 @@ that the strategy will cooperate anyway, rather than defect.</p></div>
 
     
 
-    
-        <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id="~FORGIVENESS"><span class="type-signature">(inner, constant) </span>FORGIVENESS<span class="type-signature"> :Number</span></h4>
-
-
-
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">Number</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-default">Default Value:</dt>
-    <dd class="tag-default"><ul class="dummy">
-            <li>0.2</li>
-        </ul></dd>
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="strategies_sorry.js.html">strategies/sorry.js</a>, <a href="strategies_sorry.js.html#line14">line 14</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
     
 
     
