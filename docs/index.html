@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1>Prisoner's Dilemma Tournament</h1><p><a href="https://travis-ci.org/garbados/prisoners-dilemma-tournament"><img src="https://travis-ci.org/garbados/prisoners-dilemma-tournament.svg" alt="Build Status"></a></p>
+<p><a href="http://en.wikipedia.org/wiki/Prisoner%27s_dilemma">Prisoner's Dilemma</a> tournaments are <a href="http://lesswrong.com/lw/7f2/prisoners_dilemma_tournament_results/">really neat</a>, so I decided to make my own.</p>
+<h2>Install</h2><p>If you want to play around with the tournament code, or develop your own strategies, get the source code using <a href="https://git-scm.com/">git</a>, and install dependencies with <a href="https://npmjs.com/">npm</a> like so:</p>
+<pre class="prettyprint source"><code>git clone https://github.com/garbados/prisoners-dilemma-tournament.git
+cd prisoners-dilemma-tournament
+npm install
+npm link
+pdt
+> Usage: pdt [options]
+> ...</code></pre><p>You can now use the <code>pdt</code> executable from your terminal to run tournaments!</p>
+<h2>Usage</h2><p>To run a round-robin tournament:</p>
+<pre class="prettyprint source"><code>pdt roundrobin
+# OR
+pdt rr</code></pre><p>To run a generational tournament:</p>
+<pre class="prettyprint source"><code>pdt generational
+# OR
+pdt gen</code></pre><p>Use the <code>-p</code> flag to include only specific strategies in a tournament:</p>
+<pre class="prettyprint source"><code>pdt rr -p cooperate -p defect</code></pre><p>To create your own strategy, you can scaffold one with tests:</p>
+<pre class="prettyprint source"><code>pdt scaffold &lt;name>
+# OR
+pdt new &lt;name>
+# FOR EXAMPLE
+pdt new my-great-strategy
+> Creating strategy file at /{PATH_TO_PROJECT}/prisoners-dilemma-tournament/lib/strategies/my-great-strategy.js
+> Creating strategy test file at /{PATH_TO_PROJECT}/prisoners-dilemma-tournament/test/strategies/my-great-strategy.js</code></pre><p>You can then edit those files to customize your strategy's logic and the tests that it undergoes.</p>
+<p>Check <code>pdt -h</code> for more info about available commands and options.</p>
+<h2>Testing</h2><p>To run the test suite:</p>
+<pre class="prettyprint source"><code>npm test</code></pre><p>To run the test suite <em>and</em> print test coverage:</p>
+<pre class="prettyprint source"><code>npm run cov</code></pre><h2>Concepts</h2><h3>Strategies</h3><p>Strategies take a history of the choices made during the round so far, and return their choice for this round: to cooperate (<code>true</code>) or defect (<code>false</code>).</p>
+<p>So, a strategy function that always cooperates looks like this:</p>
+<pre class="prettyprint source lang-javascript"><code>// lib/strategies/cooperate.js
+module.exports = function (history) {
+  return true
+}</code></pre><p>The history array passed to strategy functions during each round is an array of arrays. Each contained array represents the choices of one round: yours (<code>history[n][0]</code>) and your opponent's (<code>history[n][1]</code>). The first array (<code>history[0]</code>) is the first turn. At the very start of a match, history will be empty (<code>[]</code>), since no choices have been made yet.</p>
+<pre class="prettyprint source lang-javascript"><code>// example history object
+[
+  [true, false],    // you cooperated, they defected
+  [false, false],   // you both defected
+  [true, true],     // you both cooperated
+  ...
+]</code></pre><p>To create a new strategy, run <code>pdt new &lt;name&gt;</code>. To submit your strategy to the project, fork this repo, commit your changes, and issue a Pull Request. Submissions are welcome! Check out some of the existing strategies in <a href="https://github.com/garbados/prisoners-dilemma-tournament/tree/master/lib/strategies">lib/strategies</a> for ideas and examples.</p>
+<p>N.B.:</p>
+<ul>
+<li>Strategies cannot host state outside of their immediate scope. Many copies of the strategy may operate at once, so modifying variables outside of function scope will have confusing results. Constants are fine.</li>
+<li>Strategies cannot know when the match will end. They can guess!</li>
+<li>There is currently no support for performing async work. Given the number of rounds in a match, and the number of matches in a tournament, even synchronous calls to external resources (like files or databases) make the game prohibitively slow.</li>
+</ul>
+<h3>Scoring</h3><p>After each match, a score is tallied based on the choices each strategy made during each round:</p>
+<ul>
+<li>If you and your opponent cooperate, you each gain 1 point.</li>
+<li>If you both defect, you each gain 2 points.</li>
+<li>If one of you defects and the other cooperates, the cooperator gains 3 points while the defector gains 0.</li>
+</ul>
+<p>At the end of the match, the lowest score wins. Scores are also tallied across matches. A strategy that reliably wins matches may not overall have the lowest score.</p>
+<h3>Tournaments</h3><p>There are two tournament types: round-robin, and generational.</p>
+<p>A round-robin tournament pits every strategy against every strategy including itself, and then reports each strategy's total score, wins, draws, and losses.</p>
+<p>A generational tournament pits multiple copies of participating strategies against each other in successive round-robin tournaments. The strategy with the lowest score after each round-robin gains a copy, while the highest score loses a copy. In this way, the tournament meta evolves over time as strategies replace each other. After the generational tournament concludes, it reports the populations of each successive generation, tallying the number of copies of each strategy in them.</p>
+<h2>License</h2><p>GPL-3.0</p></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-lib_strategies.html">lib/strategies</a></li><li><a href="module-lib_strategies_avenger.html">lib/strategies/avenger</a></li><li><a href="module-lib_strategies_cooperate.html">lib/strategies/cooperate</a></li><li><a href="module-lib_strategies_defect.html">lib/strategies/defect</a></li><li><a href="module-lib_strategies_drone.html">lib/strategies/drone</a></li><li><a href="module-lib_strategies_evilalliance.html">lib/strategies/evilalliance</a></li><li><a href="module-lib_strategies_meanie.html">lib/strategies/meanie</a></li><li><a href="module-lib_strategies_queen.html">lib/strategies/queen</a></li><li><a href="module-lib_strategies_random.html">lib/strategies/random</a></li><li><a href="module-lib_strategies_sorry.html">lib/strategies/sorry</a></li></ul><h3>Classes</h3><ul><li><a href="BaseRunner.html">BaseRunner</a></li><li><a href="GenerationRunner.html">GenerationRunner</a></li><li><a href="RoundRobinRunner.html">RoundRobinRunner</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Thu May 18 2017 21:57:17 GMT-0700 (PDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
