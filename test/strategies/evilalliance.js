@@ -4,9 +4,30 @@ var assert = require('assert')
 var strategy = require('../../lib/strategies/evilalliance')
 
 const HISTORY = [
-  [true, false],
+  [false, false],
   [false, true],
+  [true, false],
+  [false, true]
+]
+
+const CONFEDERATE_HISTORY = [
+  [false, false],
+  [false, false],
+  [false, false],
+  [false, false],
+  [false, false],
+  [true, true],
   [true, true]
+]
+
+const DEFECT_HISTORY = [
+  [false, false],
+  [false, false],
+  [false, false],
+  [false, false],
+  [false, false],
+  [true, false],
+  [false, false]
 ]
 
 describe('strategies.evilalliance', function () {
@@ -20,5 +41,29 @@ describe('strategies.evilalliance', function () {
     })
   })
 
-  // write additional tests as appropriate
+  it('should detect confederates', function () {
+    CONFEDERATE_HISTORY.forEach(function (round, i) {
+      // test the strategy against successive subsets of the history
+      var historySubset = CONFEDERATE_HISTORY.slice(0, i)
+      var choice = strategy(historySubset)
+      if (i < 5) {
+        assert(choice === false)
+      } else {
+        assert(choice === true)
+      }
+    })
+  })
+
+  it('should realize a confederate is not as they appear', function () {
+    DEFECT_HISTORY.forEach(function (round, i) {
+      // test the strategy against successive subsets of the history
+      var historySubset = DEFECT_HISTORY.slice(0, i)
+      var choice = strategy(historySubset)
+      if (i === 5) {
+        assert(choice === true)   // buddy thinks other buddy is a buddy
+      } else {
+        assert(choice === false)  // but it's a lie
+      }
+    })
+  })
 })
