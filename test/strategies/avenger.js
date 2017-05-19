@@ -1,4 +1,3 @@
-/* global describe, it */
 
 var assert = require('assert')
 var strategy = require('../../lib/strategies/avenger')
@@ -21,7 +20,6 @@ describe('strategies.avenger', function () {
     for (var i = 0; i < HISTORY.length; i++) {
       historySubset = HISTORY.slice(0, i)
       choice = strategy(historySubset)
-      console.log(choice, i, HISTORY[i][0])
       assert(choice === HISTORY[i][0])
     }
   })
